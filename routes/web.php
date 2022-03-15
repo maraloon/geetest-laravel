@@ -1,24 +1,14 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+use App\Http\Controllers\GeetestController;
 
 Route::get(
     "/",
     function () {
         View::addExtension("html", "php");
-        return view()->file("index.html"); //注意此处路径是public
+        return view()->file("index.html");
     }
 );
 
-Route::get("register", "GeetestController@first_register");
-
-Route::post("validate", "GeetestController@second_validate");
+Route::get('register', [GeetestController::class, 'register']);
+Route::post('validate', [GeetestController::class, 'validateCaptcha']);

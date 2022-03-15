@@ -67,34 +67,32 @@
     </style>
 </head>
 <body>
-<h1>极验验证SDK DEMO</h1>
+<h1>Geetest SDK DEMO</h1>
 <form action="validate" method="post">
     <br>
     <div>
-        <label for="username">用户名：</label>
-        <input class="inp" id="username" type="text" value="极验验证">
+        <label for="username">Username：</label>
+        <input class="inp" id="username" type="text" value="Username">
     </div>
     <br>
     <div>
-        <label for="password">密码：</label>
+        <label for="password">Password：</label>
         <input class="inp" id="password" type="password" value="123456">
     </div>
     <br>
     <div>
-        <label>完成验证：</label>
+        <label>Captcha：</label>
         <div id="captcha">
-            <p id="wait" class="show">正在加载验证码......</p>
+            <p id="wait" class="show">Captcha is loading......</p>
         </div>
     </div>
     <br>
     <p id="notice" class="hide">请先完成验证</p>
-    <input class="btn" id="submit" type="submit" value="提交">
+    <input class="btn" id="submit" type="submit" value="Submit">
 </form>
 
-<!-- 注意，验证码本身是不需要 jquery 库，此处使用 jquery 仅为了在 demo 使用，减少代码量 -->
 <script src="http://apps.bdimg.com/libs/jquery/1.9.1/jquery.js"></script>
 
-<!-- 引入 极验官方gt.js，使用其中提供的 initGeetest 初始化函数 -->
 <script src="./js/gt.js"></script>
 
 <script>
@@ -109,27 +107,25 @@
                 e.preventDefault();
             }
         });
-        // 将验证码加到id为captcha的元素里，同时会有三个input的值用于表单提交
+
         captchaObj.appendTo("#captcha");
         captchaObj.onReady(function () {
             $("#wait").hide();
         });
     };
     $.ajax({
-        url: "register?t=" + (new Date()).getTime(), // 加随机数防止缓存
+        url: "register?t=" + (new Date()).getTime(),
         type: "get",
         dataType: "json",
         success: function (data) {
-            // 调用 initGeetest 初始化参数
-            // 参数1：配置参数
-            // 参数2：回调，回调的第一个参数验证码对象，之后可以使用它调用相应的接口
             initGeetest({
                 gt: data.gt,
                 challenge: data.challenge,
-                new_captcha: data.new_captcha, // 用于宕机时表示是新验证码的宕机
-                offline: !data.success, // 表示用户后台检测极验服务器是否宕机，一般不需要关注
-                product: "float", // 产品形式，包括：float，popup
-                width: "100%"
+                new_captcha: true, 
+                offline: data.offline,
+                product: "float",
+                width: "100%",
+                lang: 'ru',
             }, handler);
         }
     });
